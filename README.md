@@ -71,12 +71,12 @@ Write to disk? (adjust any field)
 
 ## Installation
 
-ObsidianSync installs through a Claude Code **marketplace**. Once published, point Claude Code at the repo; for local development you can point it at a directory instead.
+ObsidianSync installs through a Claude Code **marketplace**. Point Claude Code at the repo; for local development you can point it at a directory instead.
 
 ### Option A — From the published marketplace (recommended)
 
 ```
-/plugin marketplace add https://github.com/[TODO-owner]/obsidiansync
+/plugin marketplace add https://github.com/Wang-Shujie/ObsidianSync
 /plugin install obsidiansync@obsidian-sync
 ```
 
@@ -84,11 +84,11 @@ Then restart Claude Code (or open a new session).
 
 ### Option B — From a local checkout (development / private use)
 
-Clone the repo, then add its directory as a marketplace — `marketplace.json` lives at the workspace root and its `source` points at `./ObsidianSync`:
+Clone the repo, then add its directory as a marketplace — `marketplace.json` lives at the repository root and its `source` points at `./ObsidianSync`:
 
 ```
-git clone https://github.com/[TODO-owner]/obsidiansync [TODO-path]
-/plugin marketplace add [TODO-absolute-path-to-cloned-workspace-root]
+git clone https://github.com/Wang-Shujie/ObsidianSync
+/plugin marketplace add /absolute/path/to/ObsidianSync
 /plugin install obsidiansync@obsidian-sync
 ```
 
@@ -100,7 +100,7 @@ Add to `~/.claude/settings.json` (user) or `.claude/settings.json` (project):
 {
   "extraKnownMarketplaces": {
     "obsidian-sync": {
-      "source": { "source": "file", "path": "[TODO-absolute-path-to-workspace-root]" }
+      "source": { "source": "file", "path": "/absolute/path/to/ObsidianSync" }
     }
   },
   "enabledPlugins": {
@@ -117,7 +117,7 @@ After restarting, ask Claude to *"list available Skills"* — you should see `ob
 
 ## Configuration
 
-Vault paths resolve from one place: the **`KB_ROOT`** rule at the top of [`references/config.md`](./references/config.md). `KB_ROOT` is resolved by precedence — first non-empty value wins:
+Vault paths resolve from one place: the **`KB_ROOT`** rule at the top of [`ObsidianSync/references/config.md`](./ObsidianSync/references/config.md). `KB_ROOT` is resolved by precedence — first non-empty value wins:
 
 1. Environment variable **`OBSIDIAN_KB_ROOT`** (recommended for persistence — set it in your shell profile or Claude Code env so it survives plugin reinstalls).
 2. The **`KB_ROOT` default** line in `references/config.md` (edit it once to your vault root).
@@ -173,36 +173,37 @@ Read-only Skills (`query`, the scan phase of `maintain`, the inventory phase of 
 
 ## Project Structure
 
+The repository root is the **marketplace**; the plugin itself lives in `ObsidianSync/`:
+
 ```
-ObsidianSync/
+ObsidianSync/                       # repository root (marketplace)
 ├── .claude-plugin/
-│   └── plugin.json              # plugin manifest (name / version / description)
-├── skills/                      # 7 Skills, one directory each
-│   ├── save/SKILL.md            # @save    smart store
-│   ├── query/SKILL.md           # @query   multi-dimensional search
-│   ├── link/SKILL.md            # @link    bidirectional links
-│   ├── maintain/SKILL.md        # @maintain health check
-│   ├── tag/SKILL.md             # @tag     tag management
-│   ├── summary/SKILL.md         # @summary summary / MOC
-│   └── import/SKILL.md          # @import  URL import
-├── references/                  # shared, pulled in via ${CLAUDE_PLUGIN_ROOT}/references/...
-│   ├── config.md                # paths / tool conventions / iron rules / confirm card
-│   └── classification.md        # PARA / tags / links / writing spec
-└── README.md
+│   └── marketplace.json            # marketplace manifest — source → ./ObsidianSync
+├── ObsidianSync/                   # the plugin
+│   ├── .claude-plugin/
+│   │   └── plugin.json             # plugin manifest (name / version / description)
+│   ├── skills/                     # 7 Skills, one directory each
+│   │   ├── save/SKILL.md           # @save    smart store
+│   │   ├── query/SKILL.md          # @query   multi-dimensional search
+│   │   ├── link/SKILL.md           # @link    bidirectional links
+│   │   ├── maintain/SKILL.md       # @maintain health check
+│   │   ├── tag/SKILL.md            # @tag     tag management
+│   │   ├── summary/SKILL.md        # @summary summary / MOC
+│   │   └── import/SKILL.md         # @import  URL import
+│   └── references/                 # shared, via ${CLAUDE_PLUGIN_ROOT}/references/...
+│       ├── config.md               # paths / tool conventions / iron rules / confirm card
+│       └── classification.md       # PARA / tags / links / writing spec
+├── LICENSE
+├── README.md
+└── README.zh-CN.md
 ```
 
-The marketplace manifest lives one level up, at the **workspace root**:
-
-```
-<workspace-root>/
-└── .claude-plugin/
-    └── marketplace.json         # local marketplace, source → ./ObsidianSync
-```
+> The inner `ObsidianSync/` directory is the plugin; the marketplace manifest at the repository root points to it via `"source": "./ObsidianSync"`.
 
 ## Development Guide
 
 ### Change the vault path
-Edit `KB_ROOT` at the top of `references/config.md`. All Skills inherit it. (Or override per-session in chat.)
+Edit `KB_ROOT` at the top of `ObsidianSync/references/config.md`. All Skills inherit it. (Or override per-session in chat.)
 
 ### Add a Skill
 1. Create `skills/<name>/SKILL.md`. Frontmatter requires `name` (lowercase / digits / hyphens, ≤64 chars) and `description` (≤1024 chars — state *what it does + when to use it*; list trigger words in both EN and ZH).
@@ -221,7 +222,7 @@ Only Claude Code's built-in tools (`Bash`, `Read`, `Write`, `Edit`, `WebFetch`, 
 
 ### Local dev loop
 ```
-/plugin marketplace add <workspace-root>   # once
+/plugin marketplace add /absolute/path/to/ObsidianSync   # once
 # edit SKILL.md / references/*.md
 # in Claude Code: reinstall or restart to reload
 ```
@@ -232,7 +233,7 @@ This plugin was refactored from an earlier single-file `ObsidianSync/SKILL.md` (
 
 ## Contributing
 
-Contributions are welcome. `[TODO: point CONTRIBUTING.md / issue template at your repo]`
+Contributions are welcome — browse [issues](https://github.com/Wang-Shujie/ObsidianSync/issues) and [pull requests](https://github.com/Wang-Shujie/ObsidianSync/pulls).
 
 1. Fork the repo and create a feature branch (`git checkout -b feat/<name>`).
 2. Keep Skills short and self-contained; put anything reused into `references/`.
@@ -242,13 +243,11 @@ Contributions are welcome. `[TODO: point CONTRIBUTING.md / issue template at you
 
 **Good first issues:** new templates, additional languages for trigger words, new `query` dimensions, more `maintain` health checks.
 
-Before submitting, please search existing issues/PRs to avoid duplicates. `[TODO: code of conduct link if desired]`
+Before submitting, please search existing [issues/PRs](https://github.com/Wang-Shujie/ObsidianSync/issues) to avoid duplicates.
 
 ## License
 
 Released under the **MIT License**. See [`LICENSE`](./LICENSE).
-
-> A `LICENSE` file is referenced but not yet present in the repo. Add the standard MIT text (with your name/year) before the first public release. `[TODO]`
 
 ## Acknowledgments
 
@@ -256,4 +255,4 @@ Released under the **MIT License**. See [`LICENSE`](./LICENSE).
 - [Claude Code](https://docs.claude.com/en/docs/claude-code) — the agent platform and plugin model.
 - The **PARA method** (Tiago Forte) for the organization model.
 
-`[TODO: author handle, contact, repo URL, sponsor link as desired]`
+**Author:** [Wang-Shujie](https://github.com/Wang-Shujie) · **Repo:** https://github.com/Wang-Shujie/ObsidianSync · **Issues:** https://github.com/Wang-Shujie/ObsidianSync/issues

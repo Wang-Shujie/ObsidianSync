@@ -71,12 +71,12 @@ ObsidianSync **不**运行后台同步守护进程，也**不**推送到远端�
 
 ## 安装
 
-ObsidianSync 通过 Claude Code 的 **marketplace** 安装。发布后指向仓库即可；本地开发也可指向目录。
+ObsidianSync 通过 Claude Code 的 **marketplace** 安装。指向仓库即可；本地开发也可指向目录。
 
 ### 方式 A：从已发布 marketplace 安装（推荐）
 
 ```
-/plugin marketplace add https://github.com/[TODO-owner]/obsidiansync
+/plugin marketplace add https://github.com/Wang-Shujie/ObsidianSync
 /plugin install obsidiansync@obsidian-sync
 ```
 
@@ -84,11 +84,11 @@ ObsidianSync 通过 Claude Code 的 **marketplace** 安装。发布后指向仓�
 
 ### 方式 B：从本地克隆安装（开发 / 自用）
 
-克隆仓库后，把它的目录加为 marketplace——`marketplace.json` 在工作区根，其 `source` 指向 `./ObsidianSync`：
+克隆仓库后，把它的目录加为 marketplace——`marketplace.json` 在仓库根，其 `source` 指向 `./ObsidianSync`：
 
 ```
-git clone https://github.com/[TODO-owner]/obsidiansync [TODO-path]
-/plugin marketplace add [TODO-克隆后的工作区根绝对路径]
+git clone https://github.com/Wang-Shujie/ObsidianSync
+/plugin marketplace add /克隆后的绝对路径/ObsidianSync
 /plugin install obsidiansync@obsidian-sync
 ```
 
@@ -100,7 +100,7 @@ git clone https://github.com/[TODO-owner]/obsidiansync [TODO-path]
 {
   "extraKnownMarketplaces": {
     "obsidian-sync": {
-      "source": { "source": "file", "path": "[TODO-工作区根绝对路径]" }
+      "source": { "source": "file", "path": "/克隆后的绝对路径/ObsidianSync" }
     }
   },
   "enabledPlugins": {
@@ -117,7 +117,7 @@ git clone https://github.com/[TODO-owner]/obsidiansync [TODO-path]
 
 ## 配置
 
-知识库路径由 [`references/config.md`](./references/config.md) 顶部的 **`KB_ROOT`** 规则解析，按以下优先级取第一个非空值：
+知识库路径由 [`ObsidianSync/references/config.md`](./ObsidianSync/references/config.md) 顶部的 **`KB_ROOT`** 规则解析，按以下优先级取第一个非空值：
 
 1. 环境变量 **`OBSIDIAN_KB_ROOT`**（推荐持久化方式：写入 shell profile 或 Claude Code 环境变量设置，重装插件不丢失）。
 2. `references/config.md` 里的 **`KB_ROOT` 默认值**（首次使用前改成你的知识库根）。
@@ -173,36 +173,37 @@ Skill 是**模型自动调用**的——Claude 按你的话判断用哪个。下
 
 ## 目录结构
 
+仓库根目录即 **marketplace**；插件本体位于 `ObsidianSync/`：
+
 ```
-ObsidianSync/
+ObsidianSync/                       # 仓库根（marketplace）
 ├── .claude-plugin/
-│   └── plugin.json              # 插件清单（name/version/description）
-├── skills/                      # 7 个 Skill，每个一个目录
-│   ├── save/SKILL.md            # @save    智能存储
-│   ├── query/SKILL.md           # @query   多维检索
-│   ├── link/SKILL.md            # @link    建立双向链接
-│   ├── maintain/SKILL.md        # @maintain 健康检查
-│   ├── tag/SKILL.md             # @tag     标签管理
-│   ├── summary/SKILL.md         # @summary 生成摘要/MOC
-│   └── import/SKILL.md          # @import  导入 URL
-├── references/                  # 共享，用 ${CLAUDE_PLUGIN_ROOT}/references/... 引用
-│   ├── config.md                # 路径 / 工具约定 / 三条铁律 / 确认卡片
-│   └── classification.md        # PARA / 标签 / 链接 / 写入规范
-└── README.md
+│   └── marketplace.json            # marketplace 清单 — source → ./ObsidianSync
+├── ObsidianSync/                   # 插件本体
+│   ├── .claude-plugin/
+│   │   └── plugin.json             # 插件清单（name/version/description）
+│   ├── skills/                     # 7 个 Skill，每个一个目录
+│   │   ├── save/SKILL.md           # @save    智能存储
+│   │   ├── query/SKILL.md          # @query   多维检索
+│   │   ├── link/SKILL.md           # @link    建立双向链接
+│   │   ├── maintain/SKILL.md       # @maintain 健康检查
+│   │   ├── tag/SKILL.md            # @tag     标签管理
+│   │   ├── summary/SKILL.md        # @summary 生成摘要/MOC
+│   │   └── import/SKILL.md         # @import  导入 URL
+│   └── references/                 # 共享，用 ${CLAUDE_PLUGIN_ROOT}/references/... 引用
+│       ├── config.md               # 路径 / 工具约定 / 三条铁律 / 确认卡片
+│       └── classification.md       # PARA / 标签 / 链接 / 写入规范
+├── LICENSE
+├── README.md
+└── README.zh-CN.md
 ```
 
-marketplace 清单在上一层——**工作区根**：
-
-```
-<工作区根>/
-└── .claude-plugin/
-    └── marketplace.json         # 本地 marketplace，source → ./ObsidianSync
-```
+> 内层 `ObsidianSync/` 目录是插件本体；仓库根的 marketplace 清单通过 `"source": "./ObsidianSync"` 指向它。
 
 ## 开发指南
 
 ### 改知识库路径
-编辑 `references/config.md` 顶部的 `KB_ROOT`，所有 Skill 自动生效（或在对话中临时指定，本会话沿用）。
+编辑 `ObsidianSync/references/config.md` 顶部的 `KB_ROOT`，所有 Skill 自动生效（或在对话中临时指定，本会话沿用）。
 
 ### 加新 Skill
 1. 在 `skills/` 下建 `<名字>/SKILL.md`。frontmatter 必填 `name`（小写/数字/连字符，≤64 字符）和 `description`（≤1024 字符，写清「做什么 + 何时用」，中英触发词都列）。
@@ -221,7 +222,7 @@ marketplace 清单在上一层——**工作区根**：
 
 ### 本地开发循环
 ```
-/plugin marketplace add <工作区根>     # 一次
+/plugin marketplace add /克隆后的绝对路径/ObsidianSync   # 一次
 # 编辑 SKILL.md / references/*.md
 # 在 Claude Code 中重装或重启以重新加载
 ```
@@ -232,7 +233,7 @@ marketplace 清单在上一层——**工作区根**：
 
 ## 贡献方式
 
-欢迎贡献。`[TODO: 在你的仓库里指向 CONTRIBUTING.md / issue 模板]`
+欢迎贡献——欢迎在 [issues](https://github.com/Wang-Shujie/ObsidianSync/issues) 与 [pull requests](https://github.com/Wang-Shujie/ObsidianSync/pulls) 参与。
 
 1. Fork 仓库并建特性分支（`git checkout -b feat/<名字>`）。
 2. 保持 Skill 短小自含；复用内容放进 `references/`。
@@ -242,13 +243,11 @@ marketplace 清单在上一层——**工作区根**：
 
 **适合上手的好议题：** 新模板、为触发词补充更多语言、`query` 的新检索维度、`maintain` 的新健康检查项。
 
-提交前请先检索已有 issue/PR，避免重复。`[TODO: 如需要可加行为准则链接]`
+提交前请先检索已有 [issues/PR](https://github.com/Wang-Shujie/ObsidianSync/issues)，避免重复。
 
 ## 许可证
 
 基于 **MIT License** 发布，见 [`LICENSE`](./LICENSE)。
-
-> 仓库中引用了 `LICENSE` 文件但尚未包含。首次公开发布前，请加入标准 MIT 文本（含你的姓名/年份）。`[TODO]`
 
 ## 致谢
 
@@ -256,4 +255,4 @@ marketplace 清单在上一层——**工作区根**：
 - [Claude Code](https://docs.claude.com/en/docs/claude-code)——agent 平台与插件模型。
 - **PARA 方法**（Tiago Forte）——组织模型来源。
 
-`[TODO: 作者署名、联系方式、仓库地址、赞助链接（按需）]`
+**作者：** [Wang-Shujie](https://github.com/Wang-Shujie) · **仓库：** https://github.com/Wang-Shujie/ObsidianSync · **问题反馈：** https://github.com/Wang-Shujie/ObsidianSync/issues
