@@ -1,7 +1,7 @@
 {
   "name": "obsidiansync",
   "version": "1.0.0",
-  "description": "Manage a local Obsidian knowledge base (PARA organization, auto-tagging, bidirectional links, health checks, summaries, URL import) through 7 model-invoked Skills: save, query, link, maintain, tag, summary, import.",
+  "description": "Manage a local Obsidian knowledge base (PARA organization, auto-tagging, bidirectional links, health checks, summaries, URL import, autonomous knowledge-grounded recall) through 8 model-invoked Skills: save, query, recall, link, maintain, tag, summary, import.",
   "author": { "name": "imac" },
   "keywords": ["obsidian", "knowledge-management", "para", "notes", "pkm"],
   "license": "MIT"

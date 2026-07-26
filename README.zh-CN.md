@@ -6,7 +6,7 @@
 ![version](https://img.shields.io/badge/version-1.0.0-green)
 ![claude-code](https://img.shields.io/badge/Claude%20Code-plugin-purple)
 
-> 一个 Claude Code 插件，把 Claude 变成你本地 Obsidian 知识库的贴心管理员——PARA 自动分类、自动标签、双向链接、健康检查、摘要、URL 导入，拆成 **7 个模型自动调用的 Skill**。所有写操作都先给你方案，**经你确认**后才落盘。
+> 一个 Claude Code 插件，把 Claude 变成你本地 Obsidian 知识库的贴心管理员——PARA 自动分类、自动标签、双向链接、健康检查、摘要、URL 导入、回答前自发检索知识库（让回答有据可依），拆成 **8 个模型自动调用的 Skill**。所有写操作都先给你方案，**经你确认**后才落盘。
 
 ObsidianSync **不**运行后台同步守护进程，也**不**推送到远端。这里的 "Sync" 指 *让知识库与自身保持一致*：当你保存或导入一条笔记时，Claude 帮你分类、打标签、链接相关笔记，并写入正确的 PARA 目录——永远先展示方案、等你点头，再动磁盘。
 
@@ -31,7 +31,8 @@ ObsidianSync **不**运行后台同步守护进程，也**不**推送到远端�
 
 ## 功能特性
 
-- **7 个聚焦的 Skill**——`save` / `query` / `link` / `maintain` / `tag` / `summary` / `import`。Claude 根据你的自然语言自动判断用哪个，无需记忆命令。
+- **8 个聚焦的 Skill**——`save` / `query` / `recall` / `link` / `maintain` / `tag` / `summary` / `import`。Claude 根据你的自然语言自动判断用哪个，无需记忆命令。
+- **回答前自发检索知识库**——回答前 Claude 会主动检索你的知识库，把相关笔记折进回答，让回答有据可依（只读、模型自发调用）。
 - **PARA 组织**——每条笔记按透明、有序的规则归入 `00_Inbox` / `10_Projects` / `20_Areas` / `30_Resources` / `40_Archives`。不确定一律落 Inbox，绝不误归档。
 - **尊重已有标签的自动打标**——新标签先与库内已有标签比对，避免 `机器学习` / `ML` / `machine-learning` 并存。
 - **双向链接**——用笔记标题 + frontmatter `aliases` 作锚点，在新笔记正文里匹配并建议 `[[双链]]`，按相关性排序。
@@ -43,7 +44,7 @@ ObsidianSync **不**运行后台同步守护进程，也**不**推送到远端�
 
 ## 工作原理
 
-每个 Skill 短小自含：触发条件与流程写在各自的 `skills/<名字>/SKILL.md`。共享规则——路径、三条铁律、确认卡片、PARA/标签/链接逻辑——只放一份在 `references/`，通过 `${CLAUDE_PLUGIN_ROOT}/references/...` 引入，七个文件间零重复。
+每个 Skill 短小自含：触发条件与流程写在各自的 `skills/<名字>/SKILL.md`。共享规则——路径、三条铁律、确认卡片、PARA/标签/链接逻辑——只放一份在 `references/`，通过 `${CLAUDE_PLUGIN_ROOT}/references/...` 引入，八个文件间零重复。
 
 **三条铁律**（所有写操作必须遵守）：
 
@@ -113,7 +114,7 @@ git clone https://github.com/Wang-Shujie/ObsidianSync
 
 ### 验证
 
-重启后问 Claude「列出可用 Skill」，应能看到 `obsidiansync:save`、`obsidiansync:query` … `obsidiansync:import` 七个。或直接说「用 obsidiansync 存一条笔记」测试。
+重启后问 Claude「列出可用 Skill」，应能看到 `obsidiansync:save`、`obsidiansync:query` … `obsidiansync:import` 八个。或直接说「用 obsidiansync 存一条笔记」测试。
 
 ## 配置
 
@@ -147,6 +148,7 @@ Skill 是**模型自动调用**的——Claude 按你的话判断用哪个。下
 |---|---|---|
 | `save` | "把这段存一下：……" | 分析→PARA 分类→选模板→标签→链接→**确认**→写入 |
 | `query` | "查一下库里关于 X 的笔记" | 关键词/标签/日期/目录多维检索（只读） |
+| `recall` | （Claude 自发，无需你说） | 回答前自发检索知识库，把相关笔记折进回答，让回答有据可依（只读） |
 | `link` | "把孤立笔记连起来" | 找孤立笔记，建议插入 `[[X]]`，勾选后应用 |
 | `maintain` | "检查知识库健康度" | 断链/孤儿/frontmatter/Inbox 积压/标签漂移，分级报告 |
 | `tag` | "列出标签，把 #ML 和 #机器学习 合并" | 标签盘点、重命名/合并/删除（每步确认） |
@@ -182,9 +184,10 @@ ObsidianSync/                       # 仓库根（marketplace）
 ├── ObsidianSync/                   # 插件本体
 │   ├── .claude-plugin/
 │   │   └── plugin.json             # 插件清单（name/version/description）
-│   ├── skills/                     # 7 个 Skill，每个一个目录
+│   ├── skills/                     # 8 个 Skill，每个一个目录
 │   │   ├── save/SKILL.md           # @save    智能存储
 │   │   ├── query/SKILL.md          # @query   多维检索
+│   │   ├── recall/SKILL.md         # @recall  自发检索，有据可依
 │   │   ├── link/SKILL.md           # @link    建立双向链接
 │   │   ├── maintain/SKILL.md       # @maintain 健康检查
 │   │   ├── tag/SKILL.md            # @tag     标签管理
@@ -229,7 +232,7 @@ ObsidianSync/                       # 仓库根（marketplace）
 
 ## 从单 Skill 版本迁移
 
-本插件由原来的单文件 `ObsidianSync/SKILL.md`（已删除）重构而来：那个文件的 7 个命令被拆成 `skills/` 下 7 个独立 Skill，共享逻辑沉到 `references/`。旧的符号链接安装方式（`ln -s … ~/.claude/skills/obsidiansync`）已不再适用——请改用上面的 [marketplace 安装](#安装)。
+本插件由原来的单文件 `ObsidianSync/SKILL.md`（已删除）重构而来：那个文件的 7 个命令被拆成 `skills/` 下 7 个独立 Skill（第 8 个 `recall` 为后续新增），共享逻辑沉到 `references/`。旧的符号链接安装方式（`ln -s … ~/.claude/skills/obsidiansync`）已不再适用——请改用上面的 [marketplace 安装](#安装)。
 
 ## 贡献方式
 

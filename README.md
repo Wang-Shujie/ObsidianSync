@@ -6,7 +6,7 @@
 ![version](https://img.shields.io/badge/version-1.0.0-green)
 ![claude-code](https://img.shields.io/badge/Claude%20Code-plugin-purple)
 
-> A Claude Code plugin that turns Claude into a thoughtful librarian for your local Obsidian knowledge base — PARA classification, auto-tagging, bidirectional links, health checks, summaries, and URL import — across **7 model-invoked Skills**. Every write is proposed first and committed only after you confirm.
+> A Claude Code plugin that turns Claude into a thoughtful librarian for your local Obsidian knowledge base — PARA classification, auto-tagging, bidirectional links, health checks, summaries, URL import, and autonomous vault recall that grounds answers in your own notes — across **8 model-invoked Skills**. Every write is proposed first and committed only after you confirm.
 
 ObsidianSync does **not** run a sync daemon or push to a remote. "Sync" means *keeping your vault in sync with itself*: when you save or import a note, Claude classifies it, tags it, links it to related notes, and writes it to the right PARA folder — always showing you the plan and waiting for a **yes** before touching disk.
 
@@ -31,7 +31,8 @@ ObsidianSync does **not** run a sync daemon or push to a remote. "Sync" means *k
 
 ## Features
 
-- **7 focused Skills** — `save`, `query`, `link`, `maintain`, `tag`, `summary`, `import`. Claude picks the right one from your natural language; no commands to memorize.
+- **8 focused Skills** — `save`, `query`, `recall`, `link`, `maintain`, `tag`, `summary`, `import`. Claude picks the right one from your natural language; no commands to memorize.
+- **Autonomous vault recall** — before answering, Claude proactively searches your vault and folds your relevant notes into its reply, so answers are grounded in what you've already written (read-only; self-invoked).
 - **PARA organization** — every note is filed into `00_Inbox` / `10_Projects` / `20_Areas` / `30_Resources` / `40_Archives` with a transparent, ordered decision rule. Uncertain → Inbox, never a wrong archive.
 - **Auto-tagging that respects what already exists** — new tags are checked against the vault's existing set first, so `机器学习` / `ML` / `machine-learning` don't all coexist.
 - **Bidirectional links** — suggests `[[wikilinks]]` by matching note titles + aliases against your new note's body, ranked by relevance.
@@ -43,7 +44,7 @@ ObsidianSync does **not** run a sync daemon or push to a remote. "Sync" means *k
 
 ## How It Works
 
-Each Skill is short and self-contained: its own trigger conditions and flow in `skills/<name>/SKILL.md`. Shared rules — vault paths, the three iron rules, the confirmation card, PARA/tag/link logic — live once in `references/` and are pulled in via `${CLAUDE_PLUGIN_ROOT}/references/...`, so nothing is duplicated across seven files.
+Each Skill is short and self-contained: its own trigger conditions and flow in `skills/<name>/SKILL.md`. Shared rules — vault paths, the three iron rules, the confirmation card, PARA/tag/link logic — live once in `references/` and are pulled in via `${CLAUDE_PLUGIN_ROOT}/references/...`, so nothing is duplicated across the eight Skill files.
 
 **The three iron rules** (every write operation obeys them):
 
@@ -147,6 +148,7 @@ Skills are **model-invoked** — Claude decides which to run from what you say. 
 |---|---|---|
 | `save` | "Save this: …" | Analyze → PARA classify → pick template → tag → link → **confirm** → write |
 | `query` | "Find notes about X in the vault" | Multi-dimensional search: keyword / tag / date / folder (read-only) |
+| `recall` | *(Claude self-invokes — you don't ask)* | Proactively searches the vault before answering and folds your notes in, so replies are grounded (read-only) |
 | `link` | "Connect the orphan notes" | Find orphans, suggest `[[X]]` inserts, apply the ones you check |
 | `maintain` | "Check vault health" | Broken links / orphans / frontmatter / Inbox backlog / tag drift, graded report |
 | `tag` | "List tags, merge #ML and #机器学习" | Tag inventory, rename/merge/delete (confirm each step) |
@@ -182,9 +184,10 @@ ObsidianSync/                       # repository root (marketplace)
 ├── ObsidianSync/                   # the plugin
 │   ├── .claude-plugin/
 │   │   └── plugin.json             # plugin manifest (name / version / description)
-│   ├── skills/                     # 7 Skills, one directory each
+│   ├── skills/                     # 8 Skills, one directory each
 │   │   ├── save/SKILL.md           # @save    smart store
 │   │   ├── query/SKILL.md          # @query   multi-dimensional search
+│   │   ├── recall/SKILL.md         # @recall  self-invoke to ground answers
 │   │   ├── link/SKILL.md           # @link    bidirectional links
 │   │   ├── maintain/SKILL.md       # @maintain health check
 │   │   ├── tag/SKILL.md            # @tag     tag management
@@ -229,7 +232,7 @@ Only Claude Code's built-in tools (`Bash`, `Read`, `Write`, `Edit`, `WebFetch`, 
 
 ## Migration from the Single-Skill Version
 
-This plugin was refactored from an earlier single-file `ObsidianSync/SKILL.md` (now deleted). Its seven commands were split into seven independent Skills under `skills/`, with shared logic moved into `references/`. The old symlink install (`ln -s … ~/.claude/skills/obsidiansync`) no longer applies — use the [marketplace install](#installation) above.
+This plugin was refactored from an earlier single-file `ObsidianSync/SKILL.md` (now deleted). Its seven commands were split into seven independent Skills under `skills/` (the eighth, `recall`, was added later), with shared logic moved into `references/`. The old symlink install (`ln -s … ~/.claude/skills/obsidiansync`) no longer applies — use the [marketplace install](#installation) above.
 
 ## Contributing
 

@@ -39,9 +39,10 @@
     - 摘要：<一句话>
     是否写入？(可调整任意项)
 
-只读操作（query、maintain 的扫描阶段、tag 的盘点）直接出结果，无需确认。
+只读操作（recall、query、maintain 的扫描阶段、tag 的盘点）直接出结果，无需确认。
 
 ## Skill 之间的协作
+- `recall` 与 `query` 都检索库，分工不同：`recall`（Claude **自发**，只读）把结果折进当前回答做 grounding；`query`（**用户主动**）给用户返回可浏览的命中列表。recall 软上限 ~5 次/任务，优先宽检索 + 去重。
 - `import` 抓取 URL 后，复用 `save` 的分类 / 标签 / 链接 / 写入流程（落 `30_Resources`）。
 - `link` 的链接检测、`maintain` 的标签漂移判定，规则见 `classification.md`。
 - 各 Skill 互不依赖文件状态，可独立调用。
