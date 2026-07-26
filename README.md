@@ -121,7 +121,7 @@ Vault paths resolve from one place: the **`KB_ROOT`** rule at the top of [`Obsid
 
 1. Environment variable **`OBSIDIAN_KB_ROOT`** (recommended for persistence — set it in your shell profile or Claude Code env so it survives plugin reinstalls).
 2. The **`KB_ROOT` default** line in `references/config.md` (edit it once to your vault root).
-3. If neither is set, Claude **asks you** in chat and uses your answer for the session.
+3. If neither is set, Claude **asks you** for the vault path, then asks **whether to save it** — confirm and it's written into the `KB_ROOT default` line in `references/config.md` (so rule 2 picks it up automatically from then on); decline and it's used for this session only.
 
 ```md
 # references/config.md (excerpt)
@@ -134,7 +134,7 @@ Vault paths resolve from one place: the **`KB_ROOT`** rule at the top of [`Obsid
 
 | Setting | Where | Default / notes |
 |---|---|---|
-| Vault root (`KB_ROOT`) | `references/config.md` (or `OBSIDIAN_KB_ROOT` env) | Precedence: env var → config default → ask in chat |
+| Vault root (`KB_ROOT`) | `references/config.md` (or `OBSIDIAN_KB_ROOT` env) | Precedence: env var → config default → ask in chat (with option to save) |
 | PARA folder names | `references/config.md` | `00_Inbox` `10_Projects` `20_Areas` `30_Resources` `40_Archives` |
 | Classification / tag / link rules | `references/classification.md` | Edit freely; no Skill changes needed |
 | Note templates | `<KB_ROOT>/80_Templates/*.md` | Register new templates in `classification.md` |

@@ -121,7 +121,7 @@ git clone https://github.com/Wang-Shujie/ObsidianSync
 
 1. 环境变量 **`OBSIDIAN_KB_ROOT`**（推荐持久化方式：写入 shell profile 或 Claude Code 环境变量设置，重装插件不丢失）。
 2. `references/config.md` 里的 **`KB_ROOT` 默认值**（首次使用前改成你的知识库根）。
-3. 两者都未设 → Claude 在会话中**询问你**，并沿用至本会话结束。
+3. 两者都未设 → Claude 在会话中**询问你**知识库根路径，并追问**是否保存**——确认则写入 `references/config.md` 的「KB_ROOT 默认值」行（下次起规则 2 自动命中）；拒绝则仅本会话沿用。
 
 ```md
 # references/config.md（节选）
@@ -134,7 +134,7 @@ git clone https://github.com/Wang-Shujie/ObsidianSync
 
 | 设置项 | 位置 | 默认 / 说明 |
 |---|---|---|
-| 知识库根（`KB_ROOT`） | `references/config.md`（或 `OBSIDIAN_KB_ROOT` 环境变量） | 优先级：环境变量 → 配置默认值 → 会话中询问 |
+| 知识库根（`KB_ROOT`） | `references/config.md`（或 `OBSIDIAN_KB_ROOT` 环境变量） | 优先级：环境变量 → 配置默认值 → 会话中询问（可保存） |
 | PARA 目录名 | `references/config.md` | `00_Inbox` `10_Projects` `20_Areas` `30_Resources` `40_Archives` |
 | 分类 / 标签 / 链接规则 | `references/classification.md` | 直接编辑即可，无需改 Skill |
 | 笔记模板 | `<KB_ROOT>/80_Templates/*.md` | 新模板需在 `classification.md` 登记 |

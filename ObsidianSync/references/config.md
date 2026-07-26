@@ -9,7 +9,9 @@
 - **KB_ROOT**（知识库根）按以下优先级解析，取第一个非空值：
   1. 环境变量 `OBSIDIAN_KB_ROOT`（推荐：写入 shell profile 或 Claude Code 环境变量设置，重装插件不丢失）；
   2. 本文件下方的「KB_ROOT 默认值」；
-  3. 都没有 → 在会话中询问用户，并沿用至本会话结束。
+  3. 都没有 → 在会话中询问用户知识库根路径；得到路径后追加询问「是否把该路径保存为默认值（写入 config.md，下次起自动使用）？」
+     - 用户确认 → 用 Edit 将下方「KB_ROOT 默认值」行中的占位符替换为该路径（此次「是否保存」确认即写操作授权，无需另发确认卡片；下次起规则 2 自动命中）；
+     - 用户拒绝 → 仅本会话沿用，下次会话再次询问。
 - **KB_ROOT 默认值**：`<首次使用前改为你的知识库根，例如 /Users/you/Obsidian/MyVault>`
 - **PARA 目录**（KB_ROOT 下）：`00_Inbox` `10_Projects` `20_Areas` `30_Resources` `40_Archives`
 - **附件**：`90_Attachments`
