@@ -1,0 +1,21 @@
+{
+  "name": "obsidian-sync",
+  "owner": {
+    "name": "imac"
+  },
+  "metadata": {
+    "description": "Local marketplace for the obsidiansync plugin (Obsidian 知识库管理).",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "obsidiansync",
+      "source": "./ObsidianSync",
+      "description": "Obsidian 知识库管理：PARA 分类、自动标签、双向链接、健康检查、摘要、URL 导入（7 个 Skill）。",
+      "version": "1.0.0",
+      "author": { "name": "imac" },
+      "keywords": ["obsidian", "knowledge-management", "para", "notes"],
+      "category": "productivity"
+    }
+  ]
+}
