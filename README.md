@@ -3,7 +3,7 @@
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
-![version](https://img.shields.io/badge/version-1.0.0-green)
+![version](https://img.shields.io/badge/version-1.1.0-green)
 ![claude-code](https://img.shields.io/badge/Claude%20Code-plugin-purple)
 
 > A Claude Code plugin that turns Claude into a thoughtful librarian for your local Obsidian knowledge base — PARA classification, auto-tagging, bidirectional links, health checks, summaries, URL import, and autonomous vault recall that grounds answers in your own notes — across **8 model-invoked Skills**. Every write is proposed first and committed only after you confirm.

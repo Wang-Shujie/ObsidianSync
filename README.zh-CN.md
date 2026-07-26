@@ -3,7 +3,7 @@
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
-![version](https://img.shields.io/badge/version-1.0.0-green)
+![version](https://img.shields.io/badge/version-1.1.0-green)
 ![claude-code](https://img.shields.io/badge/Claude%20Code-plugin-purple)
 
 > 一个 Claude Code 插件，把 Claude 变成你本地 Obsidian 知识库的贴心管理员——PARA 自动分类、自动标签、双向链接、健康检查、摘要、URL 导入、回答前自发检索知识库（让回答有据可依），拆成 **8 个模型自动调用的 Skill**。所有写操作都先给你方案，**经你确认**后才落盘。
